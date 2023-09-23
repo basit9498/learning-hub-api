@@ -8,7 +8,6 @@ import UserModel from "../models/user.model";
 export const isAuthenticated = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     const access_token = req.cookies.access_token;
-
     if (!access_token) {
       return next(new ErrorHandler("Please login ", 400));
     }
@@ -38,6 +37,7 @@ export const authorizeRole = (...roles: string[]) => {
     if (!roles.includes(req.user?.role || "")) {
       return next(new ErrorHandler("Not Access this recourse", 403));
     }
+
     next();
   };
 };

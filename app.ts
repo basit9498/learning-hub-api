@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import ErrorMiddleware from "./middleware/error";
 import userRouter from "./routes/user.route";
+import courseRouter from "./routes/course.route";
 
 const app = express();
 config();
@@ -20,6 +21,7 @@ app.use(
 
 // routes
 app.use("/api/v1/", userRouter);
+app.use("/api/v1/", courseRouter);
 
 // test route
 app.use("/test", (req: Request, res: Response, next: NextFunction) => {
