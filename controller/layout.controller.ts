@@ -70,12 +70,6 @@ export const editLayout = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { type } = req.body;
-      // const isTypeExist = await LayoutModel.findOne({ type });
-
-      // if (isTypeExist) {
-      //   return next(new ErrorHandler(`This type ${type} is exist`, 400));
-      // }
-
       if (type === "banner") {
         const bannerData: any = await LayoutModel.findOne({ type: "banner" });
         const { image, title, subTitle } = req.body;
@@ -130,6 +124,22 @@ export const editLayout = CatchAsyncError(
       res.status(200).json({
         success: true,
         message: "Layout updated successfully",
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// get layout by type
+export const getLayout = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { type } = req.params;
+      const layout = await LayoutModel.findOne({ type });
+      res.status(200).json({
+        success: true,
+        layout,
       });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
