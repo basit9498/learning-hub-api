@@ -194,11 +194,15 @@ export const updateAccessToken = CatchAsyncError(
         return next(new ErrorHandler("Refresh Token is not valid  ", 400));
       }
 
-      // const session = await redis.get(decode.id)
-      const user = await UserModel.findById(decode.id);
-      if (!user) {
-        return next(new ErrorHandler("Token is not valid  ", 400));
+      const session = await redis.get(decode.id);
+      // const user = await UserModel.findById(decode.id);
+      if (!session) {
+        return next(
+          new ErrorHandler("Please login for access this resource  ", 400)
+        );
       }
+
+      const user = JSON.parse(session);
 
       const accessToken = jwt.sign(
         { id: user._id },
@@ -214,6 +218,8 @@ export const updateAccessToken = CatchAsyncError(
       req.user = user;
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, accessRefreshOptions);
+
+      await redis.set(user._id, JSON.stringify(user), "EX", 604800); //7 days
 
       res.status(200).json({
         success: true,

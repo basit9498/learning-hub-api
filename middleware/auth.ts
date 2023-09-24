@@ -21,13 +21,13 @@ export const isAuthenticated = CatchAsyncError(
       return next(new ErrorHandler("Token is not valid  ", 400));
     }
 
-    // const user = redis.get(decode.id);
-    const user = await UserModel.findById(decode.id);
+    const user = await redis.get(decode.id);
+    // const user = await UserModel.findById(decode.id);
     if (!user) {
       return next(new ErrorHandler("Token is not valid  ", 400));
     }
-    // req.user=JSON.parse(user)
-    req.user = user;
+    req.user = JSON.parse(user);
+    // req.user = user;
     next();
   }
 );
