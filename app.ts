@@ -5,6 +5,9 @@ import { config } from "dotenv";
 import ErrorMiddleware from "./middleware/error";
 import userRouter from "./routes/user.route";
 import courseRouter from "./routes/course.route";
+import orderRouter from "./routes/order.route";
+import notificationRouter from "./routes/notification.route";
+import analyticsRouter from "./routes/analytics.route";
 
 const app = express();
 config();
@@ -22,6 +25,9 @@ app.use(
 // routes
 app.use("/api/v1/", userRouter);
 app.use("/api/v1/", courseRouter);
+app.use("/api/v1/", orderRouter);
+app.use("/api/v1/", notificationRouter);
+app.use("/api/v1/", analyticsRouter);
 
 // test route
 app.use("/test", (req: Request, res: Response, next: NextFunction) => {
