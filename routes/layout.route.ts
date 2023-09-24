@@ -1,6 +1,10 @@
 import express from "express";
 import { authorizeRole, isAuthenticated } from "../middleware/auth";
-import { createLayout, editLayout } from "../controller/layout.controller";
+import {
+  createLayout,
+  editLayout,
+  getLayout,
+} from "../controller/layout.controller";
 
 const layoutRouter = express.Router();
 
@@ -17,5 +21,7 @@ layoutRouter.put(
   authorizeRole("admin"),
   editLayout
 );
+
+layoutRouter.get("/get-layout/:type", getLayout);
 
 export default layoutRouter;
